@@ -25,8 +25,18 @@ class IssueListComponent extends React.Component {
         this.updateIssue=this.updateIssue.bind(this);
         this.addIssue=this.addIssue.bind(this);
         this.deleteIssue=this.deleteIssue.bind(this);
+        this.editIssue=this.editIssue.bind(this);
     }
-
+    editIssue(index,valueToUpdate){
+        // console.log("Edit Issue calledddddd----------")
+        // console.log(index,valueToUpdate)
+        let issues = this.state.issues;
+        let currentIssue = issues[index];
+        currentIssue['name']=valueToUpdate;
+        this.setState({
+            issues:issues
+        })
+    }
     deleteIssue(indexToBeDeleted){
         console.log("delete issue called");
         let issues = this.state.issues;
@@ -79,7 +89,8 @@ class IssueListComponent extends React.Component {
                             issue={issue} 
                              clickHandler={this.changeStatus}
                              deleteIssue={this.deleteIssue}
-                             index = {index}/>);
+                             index = {index}
+                             editIssue = {this.editIssue}/>);
                     })
                 }
                 </ul>

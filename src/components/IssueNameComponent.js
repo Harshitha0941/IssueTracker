@@ -1,15 +1,33 @@
 import React from 'react';
-class IssueNameComponent extends React.Component{
-    constructor(props){
+class IssueNameComponent extends React.Component {
+
+    constructor(props) {
         super(props);
-        this.state={
-            isEditable:false
+        this.state = {
+            isEdiatble: false
         }
+        this.renderForm = this.renderForm.bind(this);
+        this.renderIssueList = this.renderIssueList.bind(this);
+        this.toggleStateForEdit = this.toggleStateForEdit.bind(this);
+         this.updateIssue=this.updateIssue.bind(this);
+     
     }
-    render(){
-        return(
-            <section>
-                <div id="update-issue" className="container">
+    
+    updateIssue(event) {
+        event.preventDefault();
+        console.log("Update Issue Method");
+        this.props.editIssue(this.props.index, this.input.value);
+         this.toggleStateForEdit();
+    }
+    toggleStateForEdit() {
+        const { isEdiatble } = this.state;
+        this.setState({
+            isEdiatble: !isEdiatble
+        })
+    }
+    renderForm() {
+        return (
+            <div id="update-issue" className="container">
                 <form className="mt-5" onSubmit={this.updateIssue}>
                     <div className="form-row align-items-center">
                         <div className="col-lg-8">
@@ -26,20 +44,44 @@ class IssueNameComponent extends React.Component{
                     </div>
                 </form>
             </div>
-            {
-            /* <li className="list-group-item" onClick={()=>{
-                this.props.clickHandler(this.props.index)
-            }}>
-            <span className={this.props.issue.completed?"completed":""}>{this.props.issue.name}</span>&nbsp; &nbsp;&nbsp;
-            <a href="hss.html" className="btn btn-warning">EDIT</a>&nbsp;&nbsp;&nbsp;
-            <button className="btn btn-danger" onClick={(event)=>{
-                event.stopPropagation();
-                this.props.deleteIssue(this.props.index);
-            }}>DELETE</button>
-            </li> */
-            }
-            </section>
-        );
+        )
+    }
+    renderIssueList() {
+        return (
+            <div className="container">
+
+                <li className="list-group-item" onClick={() => {
+                    this.props.clickHandler(this.props.index)
+                }}>
+                    <span className={this.props.issue.completed ? "completed" : ""}>
+                        {this.props.issue.name}
+                    </span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button href="" className="btn btn-warning"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            this.toggleStateForEdit();
+                        }}
+                    >Edit</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button href="" className="btn btn-danger"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            this.props.deleteIssue(this.props.index);
+                        }}>Delete</button>
+                    
+                </li>
+            </div>)
+    }
+    render() {
+        // const isEdiatble=this.state.isEdiatble;
+        const { isEdiatble } = this.state; //it has same meaning as above
+
+        return (
+            <section>
+                {isEdiatble ? this.renderForm() : this.renderIssueList()}
+            </section >
+        )
     }
 }
 
